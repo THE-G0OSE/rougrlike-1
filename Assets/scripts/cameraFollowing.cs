@@ -1,6 +1,7 @@
+
 using System.Collections;
 using System.Collections.Generic;
-
+using TMPro;
 using UnityEngine;
 
 public class cameraFollowing : MonoBehaviour
@@ -12,6 +13,7 @@ public class cameraFollowing : MonoBehaviour
     [SerializeField] private float followingTime;
     [Tooltip("смещение по горизонтали в сторону движения игрока")]
     [SerializeField] private float horizontalOrientationDelta;
+    [SerializeField] private float verticalOffset;
 
     private Vector3 cameraPosition;
     private Vector3 targetPosition;
@@ -22,7 +24,7 @@ public class cameraFollowing : MonoBehaviour
 //positions and player orientation detection
 
         cameraPosition = transform.position;
-        targetPosition = new Vector3(target.transform.position.x + currentHorizontalOrientationDelta, target.transform.position.y, target.transform.position.z);
+        targetPosition = new Vector3(target.transform.position.x + currentHorizontalOrientationDelta, target.transform.position.y + verticalOffset, -10);
 
 //distance form camera to target
 
@@ -30,7 +32,8 @@ public class cameraFollowing : MonoBehaviour
 
 //smooth camera moving
 
-        transform.Translate(distanceVector.x / followingTime, distanceVector.y / followingTime, distanceVector.z / followingTime);
+        transform.position = Vector3.Lerp(cameraPosition, targetPosition, distanceVector.magnitude / followingTime * Time.deltaTime);
+
         
         
     }

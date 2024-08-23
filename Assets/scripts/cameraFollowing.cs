@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class cameraFollowing : MonoBehaviour
 {
-    [Header("»грок")]
+    [Header("Player")]
     [SerializeField] private player target;
-    [Header("Ќастройки камеры")]
-    [Tooltip("врем€ за которое камера нагон€ет цель")]
+    [Header("Camera settings")]
+    [Tooltip("Time before camera will reach target position")]
     [SerializeField] private float followingTime;
-    [Tooltip("смещение по горизонтали в сторону движени€ игрока")]
+    [Tooltip("Horizontal offset relative to the player")]
     [SerializeField] private float horizontalOrientationDelta;
 
     private Vector3 cameraPosition;

@@ -12,14 +12,13 @@ public class player : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float secondJumpForce;
     [SerializeField] private float orientationChangeDelay;
+    [NonSerialized] public playerHorizontalOrientation currentPlayerHorizontalOrientation = playerHorizontalOrientation.Right;
 
     public enum playerHorizontalOrientation { Left = 1, Right = 2 }
-    public playerHorizontalOrientation currentPlayerHorizontalOrientation = playerHorizontalOrientation.Right;
     private int maxJumps = 1;
     private int amountOfJumps;
     private bool OnGround;
     private Rigidbody2D rb;
-    private bool isRunning;
     private float sprint;
     private playerHorizontalOrientation lastOrientation = playerHorizontalOrientation.Right;
 

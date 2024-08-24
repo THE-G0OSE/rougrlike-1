@@ -4,28 +4,30 @@ using System.Collections.Generic;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
-public class player : MonoBehaviour
+public class player : damagebelCreature
 
-{
-    [SerializeField] private cameraFollowing camera;
-    [SerializeField] private float playerSpeed;
+{   
     [SerializeField] private float jumpForce;
     [SerializeField] private float secondJumpForce;
     [SerializeField] private float orientationChangeDelay;
+    [Header("Following camera")]
+    [SerializeField] private cameraFollowing camera;
     [NonSerialized] public playerHorizontalOrientation currentPlayerHorizontalOrientation = playerHorizontalOrientation.Right;
 
     public enum playerHorizontalOrientation { Left = 1, Right = 2 }
+    private playerHorizontalOrientation lastOrientation = playerHorizontalOrientation.Right;
     private int maxJumps = 1;
     private int amountOfJumps;
     private bool OnGround;
     private Rigidbody2D rb;
     private float sprint;
-    private playerHorizontalOrientation lastOrientation = playerHorizontalOrientation.Right;
-
+    
     private void Start()
     {
         StartCoroutine(ChangeOrientation());
     }
+
+//orientation change mechanic
     IEnumerator ChangeOrientation()
     {
         float stableOrientationTime = 0;
@@ -66,7 +68,7 @@ public class player : MonoBehaviour
 
         if (Input.GetKey("d") || Input.GetKey("a"))
         {
-            float xSpeed = (Input.GetKey("d")) ? playerSpeed * sprint : -playerSpeed * sprint ;
+            float xSpeed = (Input.GetKey("d")) ? (BaseSpeed + Agility/5) * sprint : -(BaseSpeed + Agility/5) * sprint ;
             currentPlayerHorizontalOrientation = (Input.GetKey("d")) ? playerHorizontalOrientation.Right : playerHorizontalOrientation.Left;
             this.transform.position = new Vector3(this.transform.position.x + xSpeed*Time.deltaTime, this.transform.position.y, this.transform.position.z);
         }
@@ -78,17 +80,17 @@ public class player : MonoBehaviour
         if (Input.GetKeyDown("space") && OnGround == true)
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode2D.Impulse);
+            rb.AddForce(new Vector3(0, jumpForce + Agility/5, 0), ForceMode2D.Impulse);
         }
         if (Input.GetKeyDown("space") && OnGround == false && amountOfJumps > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(new Vector3(0, secondJumpForce, 0), ForceMode2D.Impulse);
+            rb.AddForce(new Vector3(0, secondJumpForce + Agility/5, 0), ForceMode2D.Impulse);
             amountOfJumps -= 1;
         }
         
     }
-
+    
 //Grounded status
     private void OnTriggerStay2D(Collider2D collision)
     {
